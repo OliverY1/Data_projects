@@ -28,7 +28,7 @@ def load_data():
     pivot1.drop("Day", axis=1, inplace=True)
     summary = pd.read_csv(r"datasets/summary.csv")
     uberfoil = pd.read_csv(r"datasets/uberfoil.csv")
-    rushuber = pd.read_csv(r"datasets\rushuber.csv")
+    rushuber = pd.read_csv(r"datasets/rushuber.csv")
     return uber, pivot1, summary, uberfoil, rushuber
 
 @st.cache_resource
