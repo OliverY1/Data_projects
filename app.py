@@ -9,6 +9,14 @@ from folium.plugins import HeatMap
 
 st.set_page_config(page_title="Youness", page_icon="💡", layout="wide", initial_sidebar_state="auto")
 
+hide_streamlit_style = """
+            <style>
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Menu selection
 selected = op(
     menu_title=None,
