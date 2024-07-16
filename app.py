@@ -70,6 +70,7 @@ def uber_project():
     st.title("Uber Data Analysis and Visualization")
     st.write("This project involves analyzing and visualizing Uber ride data to extract meaningful insights and patterns.")
     st.write("Please give the data some time to load.")
+    st.markdown("[Download raw datasets](https://drive.google.com/drive/folders/1JnVPwus3H9YMN0WJhXDLA7x_dot33mUA)")
     st.write("____")
 
     col1, col2 = st.columns(2)
