@@ -4,9 +4,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu as op
 import pandas as pd
 import plotly.express as px
-
 st.set_page_config(page_title="Youness", page_icon="💡", layout="wide", initial_sidebar_state="auto")
-
 
 hide_streamlit_style = """
             <style>
@@ -16,7 +14,6 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Menu selection
 selected = op(
     menu_title=None,
     options=["", "Uber data analysis", "Cars analysis"],
@@ -61,6 +58,4 @@ if selected == "":
     st.markdown("[Projects source code](https://github.com/OliverY1/Data_projects/blob/main/app.py)")
 
 
-
-elif selected == "more to come":
     st.write("More projects are on the way!")
