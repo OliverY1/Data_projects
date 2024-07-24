@@ -30,7 +30,7 @@ if selected == "Uber data analysis":
     uber_analysis.uber_project()
     st.markdown("##")
     if st.button("Press to show Map of uber rides"):
-        uber_analysis.draw_map
+        uber_analysis.draw_map()
 if selected == "Cars analysis":
     cars_analysis.car_project()
     
