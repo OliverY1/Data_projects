@@ -36,7 +36,11 @@ def draw_bar_chart():
 #@st.cache_data
 def draw_map():
     st.header("Map of Uber Rides")
+    placeholder = st.empty()
+    placeholder.text("Map loading...")
     st.map(rushuber, latitude="Lat", longitude="Lon")
+    time.sleep(4)
+    placeholder.empty()
 
 def draw():
     st.header('Hourly Ride Requests by Weekday')
