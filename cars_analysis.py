@@ -5,7 +5,7 @@ import plotly.express as px
 
 @st.cache_data
 def get_data():
-    df = pd.read_csv(r"datasets\cars.csv", index_col=0)
+    df = pd.read_csv(r"datasets/cars.csv", index_col=0)
     return df
 
 
