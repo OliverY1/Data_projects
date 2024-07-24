@@ -1,10 +1,11 @@
 
-import base64, cars_analysis, uber_analysis
+import base64
 import streamlit as st
 from streamlit_option_menu import option_menu as op
 import pandas as pd
 import plotly.express as px
 st.set_page_config(page_title="Youness", page_icon="💡", layout="wide", initial_sidebar_state="auto")
+import cars_analysis, uber_analysis
 
 hide_streamlit_style = """
             <style>
@@ -56,6 +57,5 @@ if selected == "":
     st.write("Welcome to my projects in Data Science! Have a look at some of my work and check out the source code! Learn more about me on LinkedIn.")
     st.markdown("[My Linkedin](https://www.linkedin.com/in/oliver-youness-041002302/)")
     st.markdown("[Projects source code](https://github.com/OliverY1/Data_projects/blob/main/app.py)")
-
 
     st.write("More projects are on the way!")
