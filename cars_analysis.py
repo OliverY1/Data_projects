@@ -39,18 +39,6 @@ def car_project():
     car_count = filtered_df.shape[0]
     earliest_production_year = filtered_df["make-year"].min()
 
-    col1,col2,col3 = st.columns(3)
-
-    with col1:
-        st.subheader("Average price")
-        st.subheader("$" + str(average_price))
-    with col2:
-        st.subheader("car count")
-        st.subheader(str(car_count))
-    with col3:
-        st.subheader("Earliest production year")
-        st.subheader(str(earliest_production_year))
-
     st.divider()
 
     price_per_color = filtered_df.groupby(by=["color"])[["price"]].mean().sort_values(by="price")
@@ -79,6 +67,10 @@ def car_project():
         left_col2.metric(label="Price of most expensive car (usd $)", value=max_price)
     with left_col2:
         left_col2.metric(label="Average price (usd $)", value=average_price)
+    with left_col2:
+        left_col2.metric(label="car count", value=car_count)
+    with left_col2:
+        left_col2.metric(label="Earliest production year", value=earliest_production_year)
 
 
     mid_col.plotly_chart(seat_price_fig, use_container_width=True)
