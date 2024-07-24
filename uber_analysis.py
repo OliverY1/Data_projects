@@ -1,9 +1,8 @@
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-@st.cache_resource
+@st.cache_data
 def load_data():
     uber = pd.read_csv(r"datasets/uber.csv")
     pivot1 = pd.read_csv(r"datasets/pivot1.csv")
@@ -15,7 +14,7 @@ def load_data():
     rushuber = pd.read_csv(r"datasets/rushuber.csv")
     return uber, pivot1, summary, uberfoil, rushuber
 
-@st.cache_resource
+@st.cache_data
 def create_figures(summary, uberfoil, uber):
     fig = px.scatter(summary, x='Hour', y='size', color='Weekday',
                      height=500, width=750, labels={'size': 'Size', 'Hour': 'Hour of Day'},
@@ -33,9 +32,8 @@ fig, boxfig, pivot = create_figures(summary, uberfoil, uber)
 def draw_bar_chart():
     st.header("Monthly Pickup Counts")
     st.bar_chart(pivot, width=500, height=500)
-    #st.write("____")
 
-#@st.cache_resource
+#@st.cache_data
 def draw_map():
     st.header("Heatmap of Uber Rides")
     st.map(rushuber, latitude="Lat", longitude="Lon")
@@ -43,19 +41,14 @@ def draw_map():
 def draw():
     st.header('Hourly Ride Requests by Weekday')
     st.plotly_chart(fig)
-    #st.write("____")
 
     st.header("Active Vehicles by Dispatching Base Number")
     st.plotly_chart(boxfig)
-    #st.write("____")
 
 @st.cache_data
 def uber_project():
-    st.title("Uber Data Analysis and Visualization")
-    st.write("This project involves analyzing and visualizing Uber ride data to extract meaningful insights and patterns.")
-    st.write("Please give the data some time to load.")
-    st.markdown("[Download raw datasets](https://drive.google.com/drive/folders/1JnVPwus3H9YMN0WJhXDLA7x_dot33mUA)")
-    st.write("____")
+    st.title("Uber New York Data Analysis")
+    st.divider()
 
     col1, col2 = st.columns(2)
 
