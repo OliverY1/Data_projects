@@ -33,7 +33,6 @@ def car_project():
 
 
     st.title("Analysis of cars")
-    st.markdown("##")
 
     average_price = int(filtered_df["price"].mean())
     car_count = filtered_df.shape[0]
