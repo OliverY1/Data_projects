@@ -35,7 +35,7 @@ def draw_bar_chart():
 
 #@st.cache_data
 def draw_map():
-    st.header("Heatmap of Uber Rides")
+    st.header("Map of Uber Rides")
     st.map(rushuber, latitude="Lat", longitude="Lon")
 
 def draw():
