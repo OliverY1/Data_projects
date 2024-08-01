@@ -22,7 +22,7 @@ def car_project():
         options=df["manufacturer"].unique(),
         default=df["manufacturer"].unique())
 
-    automation = st.sidebar.radio("Select the automation", options=df["Automation"].unique())
+    automation = st.sidebar.radio("Select the automation",options=df["Automation"].unique())
 
     category = st.sidebar.radio("Select the use category", options=df["Foreign_or_local_used"].unique())
     filtered_df = df.query("manufacturer== @Manufacturer & Automation== @automation & Foreign_or_local_used == @category")
@@ -61,14 +61,10 @@ def car_project():
 
     left_col2, mid_col, right_col2 = st.columns(3)
     with left_col2:
-        left_col2.metric(label="Price of cheapest car (usd $)", value=min_price)
-    with left_col2:
-        left_col2.metric(label="Price of most expensive car (usd $)", value=max_price)
-    with left_col2:
         left_col2.metric(label="Average price (usd $)", value=average_price)
-    with left_col2:
         left_col2.metric(label="car count", value=car_count)
-    with left_col2:
+        left_col2.metric(label="Price of cheapest car (usd $)", value=min_price)
+        left_col2.metric(label="Price of most expensive car (usd $)", value=max_price)
         left_col2.metric(label="Earliest production year", value=earliest_production_year)
 
 
