@@ -10,7 +10,7 @@ columns = ['TotalCases', 'TotalDeaths', 'TotalRecovered', 'ActiveCases']
 # Load the data
 @st.cache_data
 def load_data():
-    world_data = pd.read_csv(r"datasets\Covid-19\worldometer_data.csv")
+    world_data = pd.read_csv("datasets\Covid-19\worldometer_data.csv")
     day_wise_data = pd.read_csv("datasets\Covid-19\day_wise.csv")
     pop_test = world_data["Population"] / world_data["TotalTests"]
     deaths_to_confirmed = world_data["TotalDeaths"] / world_data["TotalCases"]
