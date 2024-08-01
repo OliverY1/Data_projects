@@ -10,6 +10,7 @@ def get_data():
 
 
 def car_project():
+    
     df = get_data()
     df = df.rename(columns={"Foreign/Local Used":"Foreign_or_local_used"})
     df["price"]=df["price"]*0.001 #convert from Naira to usd
@@ -32,7 +33,14 @@ def car_project():
         st.stop()
 
 
-    st.title("Analysis of cars")
+
+    col1,col2,col3,col4=st.columns([1,3,2,1])
+    with col2:
+        st.title("Analysis of cars")
+    with col3:
+        chosen_color = st.selectbox("Choose template", options= ['plotly_dark', 'ggplot2', 'seaborn', 'simple_white', 'plotly',
+         'plotly_white', 'presentation', 'xgridoff',
+         'ygridoff', 'gridon'])
 
     average_price = int(filtered_df["price"].mean())
     car_count = filtered_df.shape[0]
@@ -44,10 +52,10 @@ def car_project():
     price_per_production = filtered_df.groupby(by=["manufacturer"])[["price"]].mean().sort_values(by="price")
     seat_material_price = filtered_df.groupby(by=["seat-make"])[["price"]].mean().sort_values(by="price")
 
-    fig_color_price = px.bar(price_per_color,x="price",  title="Average price per color")
-    production_price_fig = px.bar(price_per_production,y="price", title="Average price per manufacturer")
-    seat_price_fig = px.pie(seat_material_price, values="price", title="average distribution of seat materials",names=seat_material_price.index)
-    production_year_fig = px.histogram(filtered_df, x="make-year")
+    fig_color_price = px.bar(price_per_color,x="price",  title="Average price per color", template=chosen_color)
+    production_price_fig = px.bar(price_per_production,y="price", title="Average price per manufacturer",template=chosen_color)
+    seat_price_fig = px.pie(seat_material_price, values="price", title="average distribution of seat materials",names=seat_material_price.index, template=chosen_color)
+    production_year_fig = px.histogram(filtered_df, x="make-year", template=chosen_color)
     production_year_fig.update_layout(bargap=0.1)
 
 
