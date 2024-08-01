@@ -18,7 +18,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 selected = op(
     menu_title=None,
-    options=["", "Uber data analysis", "Cars analysis", "Covid analysis"],
+    options=["", "Uber analysis", "Cars analysis", "Covid analysis"],
     icons=["house-door-fill", "taxi-front", "car-front-fill", "virus2"],
     menu_icon="cast",
     default_index=0,
