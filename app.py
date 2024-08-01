@@ -52,7 +52,7 @@ def set_background(png_file):
     '''
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-background = r"datasets/background1.jpg"
+background = r"datasets/background2.jpg"
 if selected == "":
     set_background(background)
     col1,col2,col3 = st.columns([1,2,1])
