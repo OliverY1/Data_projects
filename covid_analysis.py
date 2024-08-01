@@ -17,7 +17,7 @@ def load_data():
 world_data, day_wise_data = load_data()
 
 @st.cache_data
-def draw_left_figures(filtered_df, pop_test, deaths_to_confirmed):
+def draw_left_figures(filtered_df, pop_test, deaths_to_confirmed, chosen_color):
     if len(filtered_df)>=20:
         top = 20
     else:
@@ -25,22 +25,22 @@ def draw_left_figures(filtered_df, pop_test, deaths_to_confirmed):
     top = str(top)
 
     
-    st.plotly_chart(px.bar(filtered_df.iloc[0:20], x="Country/Region", y=pop_test[0:20], color="Country/Region", title="Population-to-COVID-19 Test Ratio by Country", template="plotly_dark", labels={'y': 'Ratio'}))
-    st.plotly_chart(px.line(day_wise_data, x="Date", y=['Confirmed', 'Deaths', 'Recovered', 'Active'], title="COVID-19 cases based on date", template="plotly_dark", labels={'value': 'Amount of cases'}))
-    st.plotly_chart(px.bar(filtered_df.iloc[0:20], x="Country/Region", y=["Serious,Critical", "TotalDeaths", "TotalRecovered", "ActiveCases", "TotalCases"],labels={'value': 'Amount of cases'}, title="top "+top+" Most affected countries in different cases", template="plotly_dark"))
+    st.plotly_chart(px.bar(filtered_df.iloc[0:20], x="Country/Region", y=pop_test[0:20], color="Country/Region", title="Population-to-COVID-19 Test Ratio by Country", template=chosen_color, labels={'y': 'Ratio'}))
+    st.plotly_chart(px.line(day_wise_data, x="Date", y=['Confirmed', 'Deaths', 'Recovered', 'Active'], title="COVID-19 cases based on date", template=chosen_color, labels={'value': 'Amount of cases'}))
+    st.plotly_chart(px.bar(filtered_df.iloc[0:20], x="Country/Region", y=["Serious,Critical", "TotalDeaths", "TotalRecovered", "ActiveCases", "TotalCases"],labels={'value': 'Amount of cases'}, title="top "+top+" Most affected countries in different cases", template=chosen_color))
 
     for i in columns[:2]:
-        fig = px.treemap(filtered_df.iloc[0:20], values=i, path=["Country/Region"], title=f"Treemap representation of different countries based on their "+str(i), labels={"labels": "Country"}, template="plotly_dark")
+        fig = px.treemap(filtered_df.iloc[0:20], values=i, path=["Country/Region"], title=f"Treemap representation of different countries based on their "+str(i), labels={"labels": "Country"}, template=chosen_color)
         st.plotly_chart(fig)
 
     for i in columns[:2]:
-        pie_chart = px.pie(filtered_df[0:15], values=i, names=filtered_df[0:15]["Country/Region"].values, hole=0.3, title=f"Top "+top+" Most Affected Countries by "+str(i))
+        pie_chart = px.pie(filtered_df[0:15], values=i, names=filtered_df[0:15]["Country/Region"].values, hole=0.3, title=f"Top "+top+" Most Affected Countries by "+str(i), template=chosen_color)
         st.plotly_chart(pie_chart)
 
-    st.plotly_chart(px.bar(filtered_df, x="Country/Region", y=deaths_to_confirmed, title="Death-to-Confirmed Ratio of the Most Affected Countries", labels={'y': 'Ratio'}))
+    st.plotly_chart(px.bar(filtered_df, x="Country/Region", y=deaths_to_confirmed, title="Death-to-Confirmed Ratio of the Most Affected Countries", labels={'y': 'Ratio'},template=chosen_color))
 
 @st.cache_data
-def draw_right_figures(filtered_df):
+def draw_right_figures(filtered_df, chosen_color):
     if len(filtered_df)>=20:
         top = 20
     else:
@@ -48,32 +48,38 @@ def draw_right_figures(filtered_df):
     top = str(top)
 
 
-    bar_chart = px.bar(filtered_df.iloc[0:20], y='Country/Region', color="TotalCases", x='TotalCases', text='TotalCases', template="plotly_dark")
+    bar_chart = px.bar(filtered_df.iloc[0:20], y='Country/Region', color="TotalCases", x='TotalCases', text='TotalCases', template=chosen_color)
     bar_chart.update_layout(title_text="Top "+top+" countries of total confirmed cases")
     st.plotly_chart(bar_chart)
 
-    bar_chart_deaths = px.bar(filtered_df.sort_values(by="TotalDeaths", ascending=False)[0:20], y='Country/Region', color="TotalDeaths", x='TotalDeaths', text='TotalDeaths', template="plotly_dark")
+    bar_chart_deaths = px.bar(filtered_df.sort_values(by="TotalDeaths", ascending=False)[0:20], y='Country/Region', color="TotalDeaths", x='TotalDeaths', text='TotalDeaths', template=chosen_color)
     bar_chart_deaths.update_layout(title_text="Top" +top+" countries of confirmed death cases")
     st.plotly_chart(bar_chart_deaths)
 
-    bar_chart_active = px.bar(filtered_df.sort_values(by='ActiveCases', ascending=False)[0:20], y='Country/Region', color='ActiveCases', x='ActiveCases', text='ActiveCases', template="plotly_dark")
+    bar_chart_active = px.bar(filtered_df.sort_values(by='ActiveCases', ascending=False)[0:20], y='Country/Region', color='ActiveCases', x='ActiveCases', text='ActiveCases', template=chosen_color)
     bar_chart_active.update_layout(title_text="Top "+top+" countries of confirmed active cases")
     st.plotly_chart(bar_chart_active)
 
     for i in columns[2:]:
-        fig = px.treemap(filtered_df.iloc[0:20], values=i, path=["Country/Region"], title=f"Treemap representation of different countries based on their "+str(i), labels={"labels": "Country"}, template="plotly_dark")
+        fig = px.treemap(filtered_df.iloc[0:20], values=i, path=["Country/Region"], title=f"Treemap representation of different countries based on their "+str(i), labels={"labels": "Country"}, template=chosen_color)
         st.plotly_chart(fig)
 
     for i in columns[2:]:
-        pie_chart = px.pie(filtered_df[0:15], values=i, names=filtered_df[0:15]["Country/Region"].values, hole=0.3, title=f"Top "+top+" Most Affected Countries by "+str(i))
+        pie_chart = px.pie(filtered_df[0:15], values=i, names=filtered_df[0:15]["Country/Region"].values, hole=0.3, title=f"Top "+top+" Most Affected Countries by "+str(i), template=chosen_color)
         st.plotly_chart(pie_chart)
 
-    bar_chart_recovered = px.bar(filtered_df.sort_values(by='TotalRecovered', ascending=False)[0:20], y='Country/Region', color='TotalRecovered', x='TotalRecovered', text='TotalRecovered', template="plotly_dark")
+    bar_chart_recovered = px.bar(filtered_df.sort_values(by='TotalRecovered', ascending=False)[0:20], y='Country/Region', color='TotalRecovered', x='TotalRecovered', text='TotalRecovered', template=chosen_color)
     bar_chart_recovered.update_layout(title_text="Top "+top+" countries of confirmed recovered cases")
     st.plotly_chart(bar_chart_recovered)
 
 def draw_web():
-    st.header("Covid-19 analysis")
+    col1,col2,col3,col4=st.columns([1,3,2,1])
+    with col2:
+        st.title("Covid-19 analysis")
+    with col3:
+        chosen_color = st.selectbox("Choose template", options= ['plotly_dark', 'ggplot2', 'seaborn', 'simple_white', 'plotly',
+         'plotly_white', 'presentation', 'xgridoff',
+         'ygridoff', 'gridon'])
     st.write("----")
 
     with st.sidebar:
@@ -103,6 +109,6 @@ def draw_web():
 
     left_col, right_col = st.columns(2)
     with left_col:
-        draw_left_figures(filtered_df, pop_test, deaths_to_confirmed)
+        draw_left_figures(filtered_df, pop_test, deaths_to_confirmed, chosen_color)
     with right_col:
-        draw_right_figures(filtered_df)
+        draw_right_figures(filtered_df, chosen_color)
