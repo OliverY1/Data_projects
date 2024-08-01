@@ -18,12 +18,11 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 selected = op(
     menu_title=None,
-    options=["", "Uber analysis", "Cars analysis", "Covid analysis"],
-    icons=["house-door-fill", "taxi-front", "car-front-fill", "virus2"],
+    options=["", "Covid analysis", "Cars analysis", "Uber analysis"],
+    icons=["house-door-fill", "virus2", "car-front-fill", "taxi-front"],
     menu_icon="cast",
     default_index=0,
-    orientation="horizontal"
-)
+    orientation="horizontal")
 
 if selected == "Uber analysis":
     uber_analysis.uber_project()
