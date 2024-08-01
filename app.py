@@ -34,7 +34,7 @@ if selected == "Cars analysis":
     cars_analysis.car_project()
 
 if selected =="Covid analysis":
-    covid_analysis.covid_project()
+    covid_analysis.draw_web()
     
 
 
