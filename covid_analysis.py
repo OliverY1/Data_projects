@@ -82,6 +82,8 @@ def draw_right_figures():
 
 
 def draw_web():
+    st.header("Covid-19 analysis")
+    st.write("----")
     left_col, right_col = st.columns(2)
     with left_col:
         draw_left_figures()
