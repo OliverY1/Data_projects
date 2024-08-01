@@ -25,7 +25,7 @@ selected = op(
     orientation="horizontal"
 )
 
-if selected == "Uber data analysis":
+if selected == "Uber analysis":
     uber_analysis.uber_project()
     st.markdown("##")
     if st.button("Press to show Map of uber rides"):
