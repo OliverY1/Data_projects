@@ -5,7 +5,7 @@ from streamlit_option_menu import option_menu as op
 import pandas as pd
 import plotly.express as px
 st.set_page_config(page_title="Youness", page_icon="💡", layout="wide", initial_sidebar_state="auto")
-import cars_analysis, uber_analysis, covid_analysis
+import cars_analysis, uber_analysis, covid_analysis, sorting
 
 hide_streamlit_style = """
             <style>
@@ -18,23 +18,28 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 selected = op(
     menu_title=None,
-    options=["", "Covid analysis", "Cars analysis", "Uber analysis"],
-    icons=["house-door-fill", "virus2", "car-front-fill", "taxi-front"],
+    options=["", "Covid analysis", "Cars analysis", "Uber analysis", "Sort algorithms"],
+    icons=["house-door-fill", "virus2", "car-front-fill", "taxi-front", "sort-up"],
     menu_icon="cast",
     default_index=0,
     orientation="horizontal")
 
 if selected == "Uber analysis":
-    uber_analysis.uber_project()
-    st.markdown("##")
-    if st.button("Press to show Map of uber rides"):
+    st.title("Uber New York Data Analysis")
+    st.divider()
+    if st.button("Press to see Map of uber rides"):
         uber_analysis.draw_map()
+
+    uber_analysis.uber_project()
+
 if selected == "Cars analysis":
     cars_analysis.car_project()
 
 if selected =="Covid analysis":
     covid_analysis.draw_web()
-    
+
+if selected =="Sort algorithms":
+    sorting.sort_project()
 
 
 # Background setting

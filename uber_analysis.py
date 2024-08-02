@@ -40,7 +40,6 @@ def draw_map():
     placeholder = st.empty()
     placeholder.text("Map loading...")
     st.map(rushuber, latitude="Lat", longitude="Lon")
-    time.sleep(4)
     placeholder.empty()
 
 def draw():
@@ -52,8 +51,6 @@ def draw():
 
 @st.cache_data
 def uber_project():
-    st.title("Uber New York Data Analysis")
-    st.divider()
 
     col1, col2 = st.columns(2)
 
