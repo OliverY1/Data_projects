@@ -1,125 +1,71 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import os
-import plotly.express as px
+
+import base64
 import streamlit as st
+from streamlit_option_menu import option_menu as op
+import pandas as pd
+import plotly.express as px
+st.set_page_config(page_title="Youness", page_icon="💡", layout="wide", initial_sidebar_state="auto")
+import cars_analysis, uber_analysis, covid_analysis, sorting
 
-columns = ['TotalCases', 'TotalDeaths', 'TotalRecovered', 'ActiveCases']
+hide_streamlit_style = """
+            <style>
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            header {visibility: hidden !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Load the data
-@st.cache_data
-def load_data():
-    world_data = pd.read_csv(r"datasets/Covid-19/worldometer_data.csv")
-    day_wise_data = pd.read_csv(r"datasets/Covid-19/day_wise.csv")
-    return world_data, day_wise_data
+selected = op(
+    menu_title=None,
+    options=["", "Covid analysis", "Cars analysis", "Uber analysis", "Sort algorithms"],
+    icons=["house-door-fill", "virus2", "car-front-fill", "taxi-front", "sort-up"],
+    menu_icon="cast",
+    default_index=0,
+    orientation="horizontal")
 
-world_data, day_wise_data = load_data()
+if selected == "Uber analysis":
+    st.title("Uber New York Data Analysis")
+    st.divider()
+    if st.button("Press to see Map of uber rides"):
+        uber_analysis.draw_map()
 
-@st.cache_data
-def draw_first_left_figures(filtered_df, pop_test):
-    if len(filtered_df)>=20:
-        top = 20
-    else:
-        top = len(filtered_df)
-    top = str(top)
+    uber_analysis.uber_project()
 
-    
-    st.plotly_chart(px.bar(filtered_df.iloc[0:20], x="Country/Region", y=pop_test[0:20], color="Country/Region", title="Population-to-COVID-19 Test Ratio by Country", template="plotly_dark", labels={'y': 'Ratio'}))
-    st.plotly_chart(px.line(day_wise_data, x="Date", y=['Confirmed', 'Deaths', 'Recovered', 'Active'], title="COVID-19 cases based on date", template="plotly_dark", labels={'value': 'Amount of cases'}))
-    st.plotly_chart(px.bar(filtered_df.iloc[0:20], x="Country/Region", y=["Serious,Critical", "TotalDeaths", "TotalRecovered", "ActiveCases", "TotalCases"],labels={'value': 'Amount of cases'}, title="top "+top+" Most affected countries in different cases", template="plotly_dark"))
+if selected == "Cars analysis":
+    cars_analysis.car_project()
 
+if selected =="Covid analysis":
+    covid_analysis.draw_web()
 
-@st.cache_data
-def draw_second_left_figures(filtered_df, deaths_to_confirmed):
-    if len(filtered_df)>=20:
-        top = 20
-    else:
-        top = len(filtered_df)
-    top = str(top)
-    for i in columns[:2]:
-        fig = px.treemap(filtered_df.iloc[0:20], values=i, path=["Country/Region"], title=f"Treemap representation of different countries based on their "+str(i), labels={"labels": "Country"}, template="plotly_dark")
-        st.plotly_chart(fig)
-
-    for i in columns[:2]:
-        pie_chart = px.pie(filtered_df[0:15], values=i, names=filtered_df[0:15]["Country/Region"].values, hole=0.3, title=f"Top "+top+" Most Affected Countries by "+str(i))
-        st.plotly_chart(pie_chart)
-
-    st.plotly_chart(px.bar(filtered_df, x="Country/Region", y=deaths_to_confirmed, title="Death-to-Confirmed Ratio of the Most Affected Countries", labels={'y': 'Ratio'}))
-
-@st.cache_data
-def draw_first_right_figures(filtered_df):
-    if len(filtered_df)>=20:
-        top = 20
-    else:
-        top = len(filtered_df)
-    top = str(top)
+if selected =="Sort algorithms":
+    sorting.sort_project()
 
 
-    bar_chart = px.bar(filtered_df.iloc[0:20], y='Country/Region', color="TotalCases", x='TotalCases', text='TotalCases', template="plotly_dark")
-    bar_chart.update_layout(title_text="Top "+top+" countries of total confirmed cases")
-    st.plotly_chart(bar_chart)
+# Background setting
+def set_background(png_file):
+    with open(png_file, 'rb') as f:
+        data = f.read()
+    bin_str = base64.b64encode(data).decode()
+    page_bg_img = f'''
+    <style>
+    .stApp {{
+    background-image: url("data:image/png;base64,{bin_str}");
+    background-size: cover;
+    }}
+    </style>
+    '''
+    st.markdown(page_bg_img, unsafe_allow_html=True)
 
-    bar_chart_deaths = px.bar(filtered_df.sort_values(by="TotalDeaths", ascending=False)[0:20], y='Country/Region', color="TotalDeaths", x='TotalDeaths', text='TotalDeaths', template="plotly_dark")
-    bar_chart_deaths.update_layout(title_text="Top" +top+" countries of confirmed death cases")
-    st.plotly_chart(bar_chart_deaths)
+background = r"datasets/background2.jpg"
+if selected == "":
+    set_background(background)
+    col1,col2,col3 = st.columns([1,3,1])
+    with col2:
+        st.title("Oliver Youness")
+        st.subheader("Computer science student in KTH, Stockholm")
+        st.write("Welcome to my projects in Data Science! Have a look at some of my work and check out the source code! Learn more about me on LinkedIn.")
+        st.markdown("[My Linkedin](https://www.linkedin.com/in/oliver-youness-041002302/)")
+        st.markdown("[Projects source code](https://github.com/OliverY1/Data_projects/blob/main/app.py)")
 
-    bar_chart_active = px.bar(filtered_df.sort_values(by='ActiveCases', ascending=False)[0:20], y='Country/Region', color='ActiveCases', x='ActiveCases', text='ActiveCases', template="plotly_dark")
-    bar_chart_active.update_layout(title_text="Top "+top+" countries of confirmed active cases")
-    st.plotly_chart(bar_chart_active)
-
-@st.cache_data
-def draw_second_right_figures(filtered_df):
-    if len(filtered_df)>=20:
-        top = 20
-    else:
-        top = len(filtered_df)
-    top = str(top)
-    for i in columns[2:]:
-        fig = px.treemap(filtered_df.iloc[0:20], values=i, path=["Country/Region"], title=f"Treemap representation of different countries based on their "+str(i), labels={"labels": "Country"}, template="plotly_dark")
-        st.plotly_chart(fig)
-
-    for i in columns[2:]:
-        pie_chart = px.pie(filtered_df[0:15], values=i, names=filtered_df[0:15]["Country/Region"].values, hole=0.3, title=f"Top "+top+" Most Affected Countries by "+str(i))
-        st.plotly_chart(pie_chart)
-
-    bar_chart_recovered = px.bar(filtered_df.sort_values(by='TotalRecovered', ascending=False)[0:20], y='Country/Region', color='TotalRecovered', x='TotalRecovered', text='TotalRecovered', template="plotly_dark")
-    bar_chart_recovered.update_layout(title_text="Top "+top+" countries of confirmed recovered cases")
-    st.plotly_chart(bar_chart_recovered)
-
-def draw_web():
-    st.header("Covid-19 analysis")
-    st.write("----")
-
-    with st.sidebar:
-
-        st.sidebar.header("Filter")
-        select_continent = st.multiselect("Select continents", options=world_data["Continent"].unique(), default=world_data["Continent"].unique())
-
-        default_settings = world_data["Country/Region"].unique()
-        if st.radio('Select countries', ['Default','Select']) == "Default":
-            default_settings = world_data["Country/Region"].unique()
-        else: 
-            default_settings = None
-
-        select_country = st.multiselect("",
-            options=world_data["Country/Region"].unique(),
-            default=default_settings)
-        
-    
-    filtered_df = world_data.query("`Country/Region` == @select_country & `Continent` == @select_continent")
-
-    if filtered_df.empty:
-        st.warning("The filters do not match any data")
-        st.stop()
-
-    pop_test = filtered_df["Population"] / filtered_df["TotalTests"]
-    deaths_to_confirmed = filtered_df["TotalDeaths"] / filtered_df["TotalCases"]
-
-    left_col, right_col = st.columns(2)
-    with left_col:
-        draw_first_left_figures(filtered_df, pop_test)
-        draw_second_left_figures(filtered_df,deaths_to_confirmed)
-    with right_col:
-        draw_first_right_figures(filtered_df)
-        draw_second_right_figures(filtered_df)
+        st.write("More projects are on the way!")
